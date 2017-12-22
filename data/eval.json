@@ -1,0 +1,29 @@
+{
+	"0":{
+    "filename": "image1.jpg",
+    "width": 224,
+    "height": 224,
+    "channel": 3,
+    "object_num": 0,
+    "object_labels": "",
+    "object_bboxes": ""
+	},
+  "1":{
+    "filename": "image1.jpg",
+    "width": 224,
+    "height": 224,
+    "channel": 3,
+    "object_num": 1,
+    "object_labels": "0",
+    "object_bboxes": "0.0, 0.0, 0.0, 0.0"
+	},
+  "2":{
+    "filename": "image2.jpg",
+    "width": 224,
+    "height": 224,
+    "channel": 3,
+    "object_num": 2,
+    "object_labels": "0, 1",
+    "object_bboxes": "0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0"
+	}
+}

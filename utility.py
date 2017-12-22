@@ -10,18 +10,20 @@ def calc_loss(logits = None, predictions = None):
   loss_labels = tf.losses.softmax_cross_entropy(onehot_labels = predictions[:, :, :cfg.num_classes],
                                                 logits = make_onehot(logits[:, :, 0], num_classes = cfg.num_classes))
   loss_bboxes = tf.losses.mean_squared_error(labels = logits[:, :, 1:], predictions = predictions[:, :, cfg.num_classes:])
-  return loss_labels + loss_bboxes
+  return (loss_labels + loss_bboxes)
 
 def calc_accuracy(logits = None, predictions = None):
   if None in [logits, predictions]:
     raise ValueError('None should never arise in calc_accuracy')
   compare = tf.equal(tf.argmax(predictions, 2), tf.cast(logits[:, :, 0], tf.int64))
   return tf.reduce_mean(tf.cast(compare, tf.float32))
-  val = tf.constant(0, tf.int64)
+  val = 0
+  puts_info('shape: {}, shape: {}'.format(logits.get_shape(), predictions.get_shape()))
   for row in range(cfg.batch_size):
-    if tf.equal(tf.cast(logits[row], tf.int64), predictions[row]) == tf.constant(True, tf.bool):
-      val += 1
-  return tf.cast(val, tf.float32) / tf.cast(cfg.batch_size, tf.float32)
+    for col in range(cfg.max_predicitons):
+      if tf.equal(tf.cast(logits[row, col, 0], tf.int64), tf.argmax(predictions[row, col, :cfg.num_classes])) == tf.constant(True, tf.bool):
+        val += 1
+  return tf.convert_to_tensor(1. * val / cfg.batch_size, tf.float32)
   
 def make_onehot(inputs, num_classes):
   if np.size(np.shape(inputs)) == 1:
@@ -40,7 +42,7 @@ def make_onehot(inputs, num_classes):
             y[row, col, channel] = 1.
   return tf.constant(y, tf.float32)
   
-def reshape(num, inputs, lines):
+def resize(num, inputs, lines):
   length = np.size(inputs) / num
   y = np.zeros([lines, length])
   for row in range(lines):
