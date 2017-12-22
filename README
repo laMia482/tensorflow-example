@@ -1,2 +1,7 @@
-# Tutoring
-python main.py  --network=network_in_my_cnn.py
+################# Tutorial ################
+
+1. make a json file to store the info of the dataset
+python load_to_json.py
+
+2. for example
+python main.py --batch_size=32
